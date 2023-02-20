@@ -1,3 +1,14 @@
-/* 
-    General Styles used on every website (Don't Repeat Yourself)
-*/
+
+
+.body {
+    background-image: url("https://imgs.search.brave.com/EGyK0NZqp6Vom-ladWy5Y-PkhjenHOq4lwLrfPvJEt0/rs:fit:844:225:1/g:ce/aHR0cHM6Ly90c2U0/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC53/YTZvalkzMlBrc1ZD/UXNnYmt3djhRSGFF/SyZwaWQ9QXBp");
+    background-size: contain;
+}
+h1, h2, h5 {
+    color: rgb(31, 21, 21);
+}
+.card {
+    height: auto;
+    width: auto;
+}
+

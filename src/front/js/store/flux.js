@@ -1,54 +1,73 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-		store: {
-			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
-		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
-				}
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+	  store: {
+		people: [],
+		planets: [],
+		films: [],
+		species: [],
+		starships: [],
+		vehicles: [],
+		favorites: [],
+	  },
+	  actions: {
+		getStarWars: async (resource, pagination = {}) => {
+		  let params = "";
+		  if (!!pagination.page) {
+			params = `?page=${pagination.page}&limit=${pagination.limit || 10}`;
+		  }
+		  try {
+			let resp = await fetch(`https://swapi.tech/api/${resource}${params}`);
+			if (!resp.ok) {
+			  console.error(`${resp.status}: ${resp.statusText}`);
+			  return;
 			}
-		}
+			let data = await resp.json();
+			let newStore = { ...getStore() };
+			newStore[resource] = data.result || data.results;
+			setStore(newStore);
+			return {
+			  records: data.total_records || null,
+			  pages: data.total_pages || null,
+			};
+		  } catch (error) {
+			console.error(error.message);
+		  }
+		},
+		getStarWarsDetail: async (resource, id) => {
+		  try {
+			let resp = await fetch(`https://swapi.tech/api/${resource}/${id}`);
+			if (!resp.ok) {
+			  console.error(`${resp.status}: ${resp.statusText}`);
+			  return;
+			}
+			let data = await resp.json();
+			return {
+			  ...data.result.properties,
+			};
+		  } catch (error) {
+			console.error(error.message);
+		  }
+		},
+		handleFavorites: (data) => {
+		  let currentStore = getStore();
+		  let favoriteIndex = currentStore.favorites.findIndex((fav) => fav.link == data.link);
+		  if (favoriteIndex == -1) {
+			setStore({
+			  ...currentStore,
+			  favorites: [...currentStore.favorites, data],
+			});
+		  } else {
+			let newFavorites = [...currentStore.favorites];
+			newFavorites.splice(favoriteIndex, 1);
+			setStore({
+			  ...currentStore,
+			  favorites: newFavorites,
+			});
+		  }
+		},
+	  },
 	};
-};
-
-export default getState;
+  };
+  
+  export default getState;
+  
