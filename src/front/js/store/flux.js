@@ -10,6 +10,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 		favorites: [],
 	  },
 	  actions: {
+		addFavorite: (entity) => {
+		  const store = getStore();
+		  setStore({
+			...store,
+			favorites: [...store.favorites, entity],
+		  });
+		},
+		removeFavorite: (id) => {
+		  const store = getStore();
+		  setStore({
+			...store,
+			favorites: store.favorites.filter((entity) => entity.id !== id),
+		  });
+		},
 		getStarWars: async (resource, pagination = {}) => {
 		  let params = "";
 		  if (!!pagination.page) {
