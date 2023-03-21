@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MyContext } from "../store/appContext";
 
 const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
@@ -14,10 +14,12 @@ const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
       actions.addFavorite(entity, entityType);
     }
   };
-
+  const navigate = useNavigate();
   const handleDetailClick = () => {
     actions.setSelected(entityType, entity);
+    navigate("/details", { state: { entityType, id: entity.url.split("/").reverse()[1], entity } });
   };
+
 
   const renderAdditionalInfo = () => {
     if (entityType === "planets") {
@@ -76,15 +78,19 @@ const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
                 Remove from Favorites
               </button>
             ) : (
-              <Link to={`/${entityType}/${entity.url.split("/").reverse()[1]}`} className="btn btn-primary" onClick={handleDetailClick}>
-                View Detail
-              </Link>
+              entityType === "people" && (
+                <Link to={`/people1`} className="btn btn-primary" onClick={handleDetailClick}>
+
+                  More Info
+                </Link>
+              )
             )}
           </div>
         </div>
       </div>
     </div>
   );
+  
 };
 
 export default EntityCard;

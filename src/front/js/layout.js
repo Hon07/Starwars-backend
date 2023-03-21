@@ -10,6 +10,8 @@ import People from "./pages/people";
 import Vehicles from "./pages/vehicles";
 import Planets from "./pages/planets";
 import EntityDetailsRoute from "./pages/entitydetailsRoute";
+import CharacterDetails from "./pages/characterDetails";
+import People1 from "./pages/people1";
 
 const Layout = () => {
   return (
@@ -25,6 +27,8 @@ const Layout = () => {
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/planets" element={<Planets />} />
             <Route path="/details" element={<EntityDetailsRoute />} />
+            <Route path="/character-details/:id" element={<CharacterDetails />} />
+            <Route path="/people1" element={<People1 />} />
           </Routes>
         </div>
         <Footer />
@@ -34,4 +38,3 @@ const Layout = () => {
 };
 
 export default injectContext(Layout);
-
