@@ -6,6 +6,10 @@ const Favorites = () => {
   const { store, actions } = useContext(MyContext);
   const { favorites } = store;
 
+  const handleRemoveFavorite = (uid) => {
+    actions.removeFavorite(uid);
+  };
+
   return (
     <div className="container mt-5">
       <h2>Favorites</h2>
@@ -15,7 +19,9 @@ const Favorites = () => {
             key={favorite.uid}
             entity={favorite}
             entityType={favorite.entityType}
-            handleRemoveFavorite={() => actions.removeFavorite(favorite.uid)}
+            isFavorite={true}
+            handleAddFavorite={() => {}}
+            handleRemoveFavorite={() => handleRemoveFavorite(favorite.uid)}
           />
         ))}
       </div>

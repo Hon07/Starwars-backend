@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EntityCard from "../component/entitycard.js";
 
+
 const Home = () => {
   const [entities, setEntities] = useState({ people: [], vehicles: [], planets: [] });
 

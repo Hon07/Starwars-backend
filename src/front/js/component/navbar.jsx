@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '/workspace/STARWARSPROJECT/src/front/img/starwars.png';
 
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
         <Link className="navbar-brand" to="/">
-          Star Wars 
+          <img src={logo} alt="Star Wars Logo" width="50" height="50" />
         </Link>
         <button
           className="navbar-toggler"
