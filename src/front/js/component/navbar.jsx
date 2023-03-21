@@ -20,7 +20,7 @@ const Navbar = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav nav-fill justify-content-between">
             <li className="nav-item">
               <Link className="nav-link" to="/people">
                 People
@@ -36,10 +36,14 @@ const Navbar = () => {
                 Planets
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="/favorites" className="nav-link">Favorites</Link>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
   );
 };
+
 export default Navbar;

@@ -1,39 +1,73 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { MyContext, injectContext } from "../store/appContext.js";
+import { MyContext } from "../store/appContext";
 
 const EntityCard = ({ entity, entityType }) => {
   const { store, actions } = useContext(MyContext);
-  const { favorites } = store;
-  const { addFavorite, removeFavorite } = actions;
-  const isFavorite = favorites.some((fav) => fav.id === entity.id);
 
-  const handleFavorite = () => {
+  const isFavorite = store.favorites.some((favorite) => favorite.url === entity.url);
+
+  const handleAddFavorite = () => {
     if (isFavorite) {
-      removeFavorite(entity.id);
+      actions.removeFavorite(entity.url);
     } else {
-      addFavorite({ ...entity, entityType });
+      actions.addFavorite(entity, entityType);
     }
   };
 
-  const imagePath = `https://starwars-visualguide.com/assets/img/${entityType}/${entity.id}.jpg`;
+  const handleDetailClick = () => {
+    actions.setSelected(entityType, entity);
+  };
+
+  const renderAdditionalInfo = () => {
+    if (entityType === "planets") {
+      return (
+        <div>
+          <p>Climate: {entity.climate}</p>
+          <p>Terrain: {entity.terrain}</p>
+          <p>Population: {entity.population}</p>
+        </div>
+      );
+    } else if (entityType === "vehicles") {
+      return (
+        <div>
+          <p>Model: {entity.model}</p>
+          <p>Manufacturer: {entity.manufacturer}</p>
+          <p>Class: {entity.vehicle_class}</p>
+        </div>
+      );
+    } else if (entityType === "people") {
+      return (
+        <div>
+          <p>Height: {entity.height}</p>
+          <p>Mass: {entity.mass}</p>
+          <p>Birth Year: {entity.birth_year}</p>
+        </div>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
-    <div className="col-md-4">
-      <div className="card mb-4">
-        <img src={imagePath} className="card-img-top" alt={entity.name} />
+    <div className="col-md-3 col-sm-6 my-3">
+      <div className="card h-100">
         <div className="card-body">
           <h5 className="card-title">{entity.name}</h5>
-          <button className={`btn ${isFavorite ? 'btn-danger' : 'btn-primary'}`} onClick={handleFavorite}>
-            {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-          </button>
-          <Link to={`/${entityType}/${entity.id}`} className="btn btn-secondary ms-2">
-            View Details
-          </Link>
+          {renderAdditionalInfo()}
+          <div className="d-flex justify-content-between align-items-center">
+            <button className={`btn ${isFavorite ? "btn-warning" : "btn-outline-warning"}`} onClick={handleAddFavorite}>
+              {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+            </button>
+            <Link to={`/${entityType}/${entity.url.split("/").reverse()[1]}`} className="btn btn-primary" onClick={handleDetailClick}>
+              View Detail
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default injectContext(EntityCard);
+export default EntityCard;
+
