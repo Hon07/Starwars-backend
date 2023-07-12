@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-import { injectContext } from "./store/appContext";
+import  injectContext  from "./store/appContext";
 import Home from "./pages/home";
-import Favorites from "./pages/favorites";
+
 import Navbar from "./component/navbar.jsx";
 import { Footer } from "./component/footer.jsx";
 import People from "./pages/people";
@@ -22,7 +22,7 @@ const Layout = () => {
         <div className="container flex-grow-1">
           <Routes>
             <Route index path="/" element={<Home />} />
-            <Route path="/favorites" element={<Favorites />} />
+            
             <Route path="/people" element={<People />} />
             <Route path="/vehicles" element={<Vehicles />} />
             <Route path="/planets" element={<Planets />} />

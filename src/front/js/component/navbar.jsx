@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '/workspace/STARWARSPROJECT/src/front/img/starwars.png';
-
+import React from "react";
+import { Link } from "react-router-dom";
+import logo from "/workspace/STARWARSPROJECT/src/front/img/starwars.png";
+import { useContext } from "react";
+import { MyContext } from "../store/appContext";
 const Navbar = () => {
+  const { actions, store } = useContext(MyContext);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container">
@@ -37,8 +39,42 @@ const Navbar = () => {
                 Planets
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/favorites" className="nav-link">Favorites</Link>
+
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Favorites {store.favorites.length}
+              </a>
+              <ul
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdown"
+                style={{ color: "green", backgroundColor: "black" }}
+              >
+                {store.favorites.map((favorite) => (
+                  <div className="d-flex">
+                    {" "}
+                    <li
+                      className="dropdown-item"
+                      key={favorite.index}
+                      style={{ color: "white" }}
+                    >
+                      {favorite.name}
+                    </li>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => actions.removeFavorites(favorite.index)}
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </ul>
             </li>
           </ul>
         </div>

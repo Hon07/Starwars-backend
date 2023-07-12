@@ -1,44 +1,49 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
+
 import EntityCard from "../component/entitycard.js";
-
-
+import { MyContext } from "../store/appContext.js";
 const Home = () => {
-  const [entities, setEntities] = useState({ people: [], vehicles: [], planets: [] });
+  const { actions, store } = useContext(MyContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const peopleResponse = await axios.get('https://swapi.dev/api/people/');
-      const vehiclesResponse = await axios.get('https://swapi.dev/api/vehicles/');
-      const planetsResponse = await axios.get('https://swapi.dev/api/planets/');
-
-      setEntities({
-        people: peopleResponse.data.results,
-        vehicles: vehiclesResponse.data.results,
-        planets: planetsResponse.data.results,
-      });
-    };
-
-    fetchData();
+    actions.getStarwars("people");
+    actions.getStarwars("planets");
+    actions.getStarwars("vehicles");
   }, []);
-
   return (
     <div className="container mt-5">
       <h2>People</h2>
-      <div className="row">
-        {entities.people.map((person) => (
-          <EntityCard key={person.url} entity={person} entityType="people" />
+      <div
+        className="list-group-horizontal d-flex overflow-scroll "
+        style={{ maxHeight: "400px" }}
+      >
+        {store.people.map((person) => (
+          <EntityCard
+            key={person.url}
+            entity={person}
+            entityType="characters"
+          />
         ))}
       </div>
-      <h2 className="mt-5">Vehicles</h2>
-      <div className="row">
-        {entities.vehicles.map((vehicle) => (
-          <EntityCard key={vehicle.url} entity={vehicle} entityType="vehicles" />
+      <h2 className=" mt-5">Vehicles</h2>
+      <div
+        className="list-group-horizontal d-flex overflow-scroll"
+        style={{ maxHeight: "400px" }}
+      >
+        {store.vehicles.map((vehicle) => (
+          <EntityCard
+            key={vehicle.url}
+            entity={vehicle}
+            entityType="vehicles"
+          />
         ))}
       </div>
       <h2 className="mt-5">Planets</h2>
-      <div className="row">
-        {entities.planets.map((planet) => (
+      <div
+        className="list-group-horizontal d-flex overflow-scroll"
+        style={{ maxHeight: "400px" }}
+      >
+        {store.planets.map((planet) => (
           <EntityCard key={planet.url} entity={planet} entityType="planets" />
         ))}
       </div>
