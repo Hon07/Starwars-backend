@@ -63,6 +63,18 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error(error.message);
         }
       },
+      handleFavorites: (data) => {
+        let storeActions = getActions();
+        let favoriteIndex = getStore().favorites.findIndex(
+          (fav) => fav.link == data.link
+        );
+        if (favoriteIndex == -1) {
+          storeActions.addFavorites(data);
+        } else {
+          storeActions.removeFavorites(favoriteIndex);
+        }
+      },
+
       /* handleFavorites: (data) => {
         let currentStore = getStore();
         let favoriteIndex = currentStore.favorites.findIndex(

@@ -4,16 +4,18 @@ import { MyContext } from "../store/appContext";
 
 const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
   const { store, actions } = useContext(MyContext);
-  console.log(entity);
+
   const isFavorite = store.favorites.some(
     (favorite) => favorite.url === entity.url
   );
 
   const handleAddFavorite = () => {
     if (isFavorite) {
-      actions.removeFavorite(entity.url);
+      actions.removeFavorites(entity);
+      console.log(entity.url);
     } else {
       actions.addFavorite(entity, entityType);
+      console.log(entity.url);
     }
   };
   const navigate = useNavigate();
@@ -82,7 +84,7 @@ const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
 
         <div className="card-body">
           <h5 className="card-title">{entity.name}</h5>
-          {/*renderAdditionalInfo()*/}
+
           <div className="d-flex justify-content-between align-items-center">
             <button
               className={`btn ${
@@ -93,7 +95,15 @@ const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
               {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
             </button>
             {handleRemoveFavorite ? (
-              <button className="btn btn-danger" onClick={handleRemoveFavorite}>
+              <button
+                className="btn btn-danger"
+                onClick={() =>
+                  actions.handleFavorites({
+                    name: entity.title,
+                    link: `/${entity.type}/${entity.id}`,
+                  })
+                }
+              >
                 Remove from Favorites
               </button>
             ) : (
