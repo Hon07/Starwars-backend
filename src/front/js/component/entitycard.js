@@ -117,6 +117,13 @@ const EntityCard = ({ entity, entityType, handleRemoveFavorite }) => {
                 </Link>
               )
             )}
+            <Link
+              to={`/${entityType}/${entity.uid}`}
+              className="btn btn-primary"
+              onClick={handleDetailClick}
+            >
+              More Info
+            </Link>
           </div>
         </div>
       </div>
