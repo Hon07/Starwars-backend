@@ -54,8 +54,8 @@ class Planets(db.Model):
     climate = db.Column(db.String(50), nullable = False)
     def __repr__(self):
         return f'<Planets {self.id}>'
-        def serialize(self):
-            return {
+    def serialize(self):
+        return {
             "id": self.id,
             "name": self.name,
             "diameter": self.diameter,
@@ -118,9 +118,9 @@ class Films(db.Model):
     episode_id = db.Column(db.Integer, nullable = False)
     def __repr__(self):
         return f'<Films {self.id}>'
-        def serialize(self):
-            return{
-                "id": self.id,
+    def serialize(self):
+        return{
+            "id": self.id,
             "title": self.title,
             "director": self.director,
             "producer": self.producer,
@@ -161,21 +161,33 @@ class Favorites(db.Model):
         return f'<Favorites {self.id}>'
     def serialize(self):
         if self.favorite_type == "films":
-            elements = Films.query.filter(Films.id == self.element_id).first()
+            element = Films.query.get(self.element_id)
         elif self.favorite_type == "people": 
-            elements = People.query.filter(People.id == self.element_id).first()
+            element = People.query.get(self.element_id)
         elif self.favorite_type == "planets": 
-            elements = Planets.query.filter(Planets.id == self.element_id).first()
+            element = Planets.query.get(self.element_id)
         elif self.favorite_type == "species": 
-            elements = Species.query.filter(Species.id == self.element_id).first()
+            element = Species.query.get(self.element_id)
         elif self.favorite_type == "starships": 
-            elements = Starships.query.filter(Starships.id == self.element_id).first()
+            element = Starships.query.get(self.element_id)
         elif self.favorite_type == "vehicles": 
-            elements = Vehicles.query.filter(Vehicles.id == self.element_id).first()
-        return{
-            "id": self.id,
-            "favorite_type": self.favorite_type,
-            "user":self.user.email,
-            "user_id":self.user.id,
-            "element": elements.serialize()
-        }
+            element = Vehicles.query.get(self.element_id)
+        else:
+            element = None
+
+        if element:
+            return {
+                "id": self.id,
+                "favorite_type": self.favorite_type,
+                "user": self.user.email,
+                "user_id": self.user.id,
+                "element": element.serialize()
+            }
+        else:
+            return {
+                "id": self.id,
+                "favorite_type": self.favorite_type,
+                "user": self.user.email,
+                "user_id": self.user.id,
+                "element": None
+            }
